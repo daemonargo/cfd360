@@ -12,7 +12,7 @@ from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.views.generic import ListView, DetailView, View, CreateView, TemplateView
 from django.contrib import messages
-from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm, ProfileForm, QuickTradeForm
+from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm, ProfileForm, QuickTradeForm, WithdrawForm, DepositForm
 from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -41,6 +41,12 @@ class DashboardView(DetailView):
     template_name = 'account/profile.html'
     context_object_name = 'profile'
 
+class DepositForm(CreateView):
+    model = UserProfile
+    template_name = 'account/profile.html'
+    context_object_name = 'profile'
+
+
 def dashboard(request, slug):
     profile = get_object_or_404(UserProfile, slug=slug)
     form = ProfileForm()
@@ -66,21 +72,30 @@ class PrivacyView(TemplateView):
 def profile(request, slug):
     profile = get_object_or_404(UserProfile, slug=slug)
     form = ProfileForm()
-    q_form = QuickTradeForm()
+    d_form = DepositForm()
+    w_form = WithdrawForm()
     if request.method  == 'POST':
         form = ProfileForm(request.POST)
-        q_form = QuickTradeForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('core:profile', slug=slug)
+        d_form = DepositForm(request.POST)
+        w_form = WithdrawForm(request.POST)
 
-        if q_form.is_valid():
+        if form.is_valid():
             form.save()
             messages.success(request, "You quick trade was successful")
             return redirect('core:profile', slug=slug)
+
+        if d_form.is_valid():
+            d_form.save()
+            messages.success(request, "You quick trade was successful")
+            return redirect('core:profile', slug=slug)
+        
+        if w_form.is_valid():
+            w_form.save()
+            messages.success(request, "You withdrawal is pending")
+            return redirect('core:profile', slug=slug)
             
 
-    return render(request, 'account/profile.html', {'profile':profile, 'form':form, 'q_form':q_form})
+    return render(request, 'account/profile.html', {'profile':profile, 'form':form, 'd_form':d_form, 'w_form':w_form})
 
 class CheckoutView(View):
     def get(self, *args, **kwargs):

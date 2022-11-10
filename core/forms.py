@@ -34,7 +34,7 @@ class WalletForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['first_name', 'last_name', 'mobile_no']
+        fields = ['user', 'first_name', 'last_name', 'mobile_no']
         
 class CheckoutForm(forms.Form):
     shipping_address = forms.CharField(required=False)

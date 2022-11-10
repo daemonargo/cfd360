@@ -138,12 +138,11 @@ class UserProfile(models.Model):
     last_name = models.CharField(max_length=250, blank=True, null=True)
     quick_trade = models.CharField(max_length=250, null=True, blank=True)
     mobile_no = models.CharField(max_length=250, blank=True, null=True)
-    
     withdraw_option = models.CharField(max_length=250, null=True, blank=True, choices=WITHDRAW_CHOICE, default='Bitcoin')
-    this_week = models.CharField(max_length=250, blank=True, null=True)
-    this_month = models.CharField(max_length=250, blank=True, null=True)
-    this_week_roi = models.CharField(max_length=250, blank=True, null=True)
-    this_month_roi = models.CharField(max_length=250, blank=True, null=True)
+    this_week = models.CharField(max_length=250, blank=True, null=True, default=0.0)
+    this_month = models.CharField(max_length=250, blank=True, null=True, default=0.0)
+    this_week_roi = models.CharField(max_length=250, blank=True, null=True, default=0.0)
+    this_month_roi = models.CharField(max_length=250, blank=True, null=True, default=0.0)
     stripe_customer_id = models.CharField(max_length=50, blank=True, null=True)
     one_click_purchasing = models.BooleanField(default=False)
     slug = models.SlugField(max_length=250,blank=True, null=True)
@@ -159,15 +158,12 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.email
 
-
-
 class Wallets(models.Model):
 	user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,max_length=250, null=True, blank=True)
 	address = models.CharField(max_length=250, null=True, blank=True, default='3L8rpKiJvzHWFPURbyfrexR9nzzaAwFPGQ')
 	balance = models.CharField(max_length=250, null=True, blank=True, default=0.0)
 	profit_margin = models.FloatField(max_length=250, null=True, blank=True, default=0.0)
 	slug = models.SlugField(max_length=250,null=True, blank=True)
-    
 	date_created = models.DateTimeField(max_length=250, null=True, blank=True, default=timezone.now)
 	
 	def save(self, *args, **kwargs):
@@ -208,6 +204,7 @@ class Withdraw(models.Model):
 	user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,max_length=250, null=True, blank=True)
 	wallet = models.ForeignKey(Wallets, on_delete=models.CASCADE)
 	amount = models.CharField(max_length=250, null=True, blank=True)
+    #option = models.CharField(choices=WITHDRAW_CHOICE, default='Bitcoin', max_length=250, null=True, blank=True)
 	status = models.CharField(choices=STATUS, default="Pending", max_length=250, null=True, blank=True)
 	date_created = models.DateTimeField(max_length=250, null=True, blank=True)
 

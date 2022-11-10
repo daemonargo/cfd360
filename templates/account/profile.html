@@ -100,7 +100,7 @@
                   <a class="nav-link py-0 d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
        
                     <div class="caption ms-3 ">
-                        <h6 class="mb-0 caption-title">{{profile.user}}</h6>
+                        <h6 class="mb-0 caption-title">{{profile.user.email}}</h6>
                         
                     </div>
                   </a>
@@ -180,18 +180,15 @@
                                     <p class="fs-6">Sell</p>
                                  </div>
                               </div>
-                            <form action="" method="post">
-                              <input type="text" class="form-control">
-                            </form> <br>
-                              <div class="d-flex justify-content-between">
-                                 <h6>Amount(USD)</h6>
-                                 <h6 class="mt-3 text-warning">USD</h6>
-                              </div>
-                              <p>${{profile.wallet.balance}}</p>
-                                         
+                            <form  method="post">
+                              <input type="text" class="form-control" name="" id="">
+                           <br>
+                                     
                               <div class="d-grid">
-                                 <button class="btn btn-primary" type="button">Buy ${{profile.wallet.balance}} BTC</button>
+                                 <button class="btn btn-primary" type="submit">Buy BTC</button>
                               </div>
+
+                           </form> 
                            </div>
                         </div>
                      </ul>
@@ -223,17 +220,21 @@
                            <div class="card-body iq-extra">
                               <div class="d-flex justify-content-between">
                                 <div class="container p-2 text-center">
-                                    <p style="font-size: 14px;" class="lead" >To withdraw from your account please choose the required withdrawal option.</p> <br>
-                                 <select name="" id="">
-                                    <option class="form-control" name="withdraw_btc"  >Bitcoin</option>
-                                    <option  class="form-control"  name="withdraw_bank">Bank Withdrawal</option>
-                                 </select>
-                                
-                                </div>
+                                 <p style="font-size: 14px;" class="lead" >To withdraw from your account please choose the required withdrawal amount and withdrawal method.</p>
+
+                                 <form  method="POST">
+                                    <div class="form-group">
+                                       {% csrf_token %}
+                                       {{w_form|crispy}}
+                                       <input type="submit" class="btn btn-info" value="Continue to withdrawal">
+                           
+                                    </div>
+                                 </form>
+                    
+                            </div>
 
                               </div>
-                              <button class="btn btn-danger">Continue to withdrawal</button>
-                           
+                             
                                          
                            
                            </div>
@@ -324,6 +325,7 @@
                               </div>
                            </div>
                         </div>
+                        
                         <div class="col-md-6"> 
                            <div class="card bg-soft-secondary align-items-center pt-4 shadow-none mb-0">
                               <div class="avatar bg-secondary p-2 mb-2">
@@ -344,6 +346,8 @@
                                  <div class="pt-4 pb-3">
                                     <small>- {{profile.this_month_roi}}%</small>
                                  </div>
+
+                                 
                               </div>
                            </div>
                         </div>              
