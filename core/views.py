@@ -1,7 +1,6 @@
 import random
 import string
 from django.shortcuts import reverse
-import stripe
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
