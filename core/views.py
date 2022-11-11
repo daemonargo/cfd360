@@ -14,9 +14,6 @@ from django.contrib import messages
 from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm, ProfileForm, QuickTradeForm, WithdrawForm, DepositForm
 from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile
 
-stripe.api_key = settings.STRIPE_SECRET_KEY
-
-
 def create_ref_code():
     return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
 
@@ -406,8 +403,9 @@ class PaymentView(View):
 
 class HomeView(ListView):
     model = UserProfile
-    template_name = "index.html"
     context_object_name = "profile"
+    template_name = "index.html"
+    
 
 def home(request):
     profile = UserProfile.objects.all()
