@@ -14,6 +14,7 @@ from django.contrib import messages
 from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm, ProfileForm, QuickTradeForm, WithdrawForm, DepositForm
 from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile
 
+
 def create_ref_code():
     return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
 

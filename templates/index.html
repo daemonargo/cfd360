@@ -20,13 +20,16 @@
                         <p class="wow fadeInUp" data-wow-delay=".6s">Invest your spare change in Bitcoin and save
                             with<br> crypto to earn interest in real time.
                         </p> <br>
+                       
+                        {% for p in profile %}
                         <div class="button wow fadeInUp mt-2" >
                           
-                            <a href="{{profile.get_absolute_url}}" class="btn ">Start Investing</a>
+                            <a href="/dashboard/{{p.slug}}" class="btn ">Start Investing</a>
                         </div>
-                        
-                     
+                    
+                        {% endfor %}
 
+                       
 
                     </div>
 
