@@ -1,7 +1,7 @@
 from .base import *
 
-DEBUG = config('DEBUG', cast=bool)
-ALLOWED_HOSTS = ['ip-address', 'www.your-website.com']
+
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'cfd360.net', 'www.cfd360.net']
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -13,13 +13,10 @@ AUTH_PASSWORD_VALIDATORS = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'PORT': ''
+        'NAME': 'defaultdb',
+        'USER': 'doadmin',
+        'PASSWORD': 'AVNS_Z9fBZWSJtbZo_8QMf65',
+        'HOST': 'private-django-db-do-user-12720463-0.b.db.ondigitalocean.com',
+        'PORT': '25060'
     }
 }
-
-STRIPE_PUBLIC_KEY = config('STRIPE_LIVE_PUBLIC_KEY')
-STRIPE_SECRET_KEY = config('STRIPE_LIVE_SECRET_KEY')
