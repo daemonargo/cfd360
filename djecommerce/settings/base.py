@@ -1,5 +1,7 @@
 import os
 from decouple import config
+ALLOWED_HOSTS = ['127.0.0.1', '159.223.143.116', 'localhost', 'cfd360.net', 'www.cfd360.net', 'cfd360.onrender.com', 'www.cfd360.onrender.com']
+#ALLOWED_HOSTS = ['*']
 
 BASE_DIR = os.path.dirname(os.path.dirname(
     os.path.dirname(os.path.abspath(__file__))))
