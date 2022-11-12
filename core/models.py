@@ -132,7 +132,7 @@ class CustomUser(AbstractBaseUser):
 class UserProfile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    wallet = models.ForeignKey('Wallets', on_delete=models.CASCADE, max_length=250, blank=True, null=True)
+    wallet = models.ForeignKey('Wallets', on_delete=models.CASCADE, max_length=250, blank=True, null=True, )
     first_name = models.CharField(max_length=250, blank=True, null=True)
     mobile_no = models.CharField(max_length=250, blank=True, null=True)
     last_name = models.CharField(max_length=250, blank=True, null=True)
@@ -185,7 +185,7 @@ class Deposits(models.Model):
 	status = models.CharField(choices=STATUS, default="Pending", max_length=250, null=True, blank=True)
 	date_created = models.DateTimeField(max_length=250, null=True, blank=True)
 
-
+   
 	def __str__(self):
 		return self.wallet
 class Transaction(models.Model):
@@ -197,7 +197,7 @@ class Transaction(models.Model):
 	date_created = models.DateTimeField(max_length=250, null=True, blank=True)
 
 	def __str__(self):
-		return self.wallet
+		return f'{self.user.email} transactions'
 
 
 class Withdraw(models.Model):
@@ -209,7 +209,7 @@ class Withdraw(models.Model):
 	date_created = models.DateTimeField(max_length=250, null=True, blank=True)
 
 	def __str__(self):
-		return self.user.email
+		return f'{self.user.email} withdrawals'
 
 
 class Item(models.Model):

@@ -35,10 +35,11 @@ def is_valid_form(values):
 
 class DashboardView(DetailView):
     model = UserProfile
-    template_name = 'account/profile.html'
     context_object_name = 'profile'
+    template_name = 'account/profile.html'
+    
 
-class DepositForm(CreateView):
+class DepositFormView(CreateView):
     model = UserProfile
     template_name = 'account/profile.html'
     context_object_name = 'profile'
@@ -79,17 +80,17 @@ def profile(request, slug):
         if form.is_valid():
             form.save()
             messages.success(request, "You quick trade was successful")
-            return redirect('core:profile', slug=slug)
+            return redirect('core:profile')
 
         if d_form.is_valid():
             d_form.save()
             messages.success(request, "You quick trade was successful")
-            return redirect('core:profile', slug=slug)
+            return redirect('core:profile')
         
         if w_form.is_valid():
             w_form.save()
             messages.success(request, "You withdrawal is pending")
-            return redirect('core:profile', slug=slug)
+            return redirect('core:profile')
             
 
     return render(request, 'account/profile.html', {'profile':profile, 'form':form, 'd_form':d_form, 'w_form':w_form})
