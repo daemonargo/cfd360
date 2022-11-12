@@ -89,3 +89,23 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ACCOUNT_EMAIL_VERIFICATION = "none"
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 AUTH_USER_MODEL = 'core.CustomUser'
+LOGGING = {
+ 
+   'version': 1,
+   'disable_existing_loggers': False,
+   'handlers': {
+      'file': {
+         'level': 'DEBUG',
+         'class': 'logging.FileHandler',
+         'filename': '/tmp/debug.log',
+      },
+   },
+   'loggers': {
+      'django': {
+         'handlers': ['file'],
+         'level': 'DEBUG',
+         'propagate': True,
+      },
+   },
+}
+
