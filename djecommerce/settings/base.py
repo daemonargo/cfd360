@@ -1,12 +1,10 @@
 import os
 from decouple import config
-ALLOWED_HOSTS = ['127.0.0.1', '159.223.143.116', 'localhost', 'cfd360.net', 'www.cfd360.net', 'cfd360.onrender.com', 'www.cfd360.onrender.com']
-#ALLOWED_HOSTS = ['*']
 
 BASE_DIR = os.path.dirname(os.path.dirname(
     os.path.dirname(os.path.abspath(__file__))))
 
-SECRET_KEY = 'kobl@t=yw9d*0y%jt2gjnq78=u!z_rrxb&w8e47l!(jz@m79zy'
+SECRET_KEY = config('SECRET_KEY')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -91,23 +89,3 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ACCOUNT_EMAIL_VERIFICATION = "none"
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 AUTH_USER_MODEL = 'core.CustomUser'
-LOGGING = {
- 
-   'version': 1,
-   'disable_existing_loggers': False,
-   'handlers': {
-      'file': {
-         'level': 'DEBUG',
-         'class': 'logging.FileHandler',
-         'filename': '/tmp/debug.log',
-      },
-   },
-   'loggers': {
-      'django': {
-         'handlers': ['file'],
-         'level': 'DEBUG',
-         'propagate': True,
-      },
-   },
-}
-
