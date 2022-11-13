@@ -1,6 +1,6 @@
 from .base import *
 DEBUG = True
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'cfd360.net', 'www.cfd360.net', 'cfd360.onrender.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'cfd360.net', 'www.cfd360.net', 'cfd360.onrender.com', ]
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -12,11 +12,19 @@ AUTH_PASSWORD_VALIDATORS = [
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'defaultdb',
-        'USER': 'doadmin',
-        'PASSWORD': 'AVNS_Z9fBZWSJtbZo_8QMf65',
-        'HOST': 'private-django-db-do-user-12720463-0.b.db.ondigitalocean.com',
-        'PORT': '25060'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+"""DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'cfd360_user',
+        'USER': 'cfd360',
+        'PASSWORD': 'RKzduwRNAORhspPck6jSFOIO8ciAafkg',
+        'HOST': 'dpg-cdo4u19a6gdooi7q29v0-a',
+        'PORT': '5432'
+    }
+}
+"""
