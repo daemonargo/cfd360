@@ -32,7 +32,7 @@ class UserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2')}
+            'fields': ('email', 'password1', 'password2', 'first_name','last_name')}
         ),
     )
     search_fields = ['email']
@@ -53,7 +53,7 @@ class UserProfileAdmin():
     search_fields = ['user']
     ordering = ['-date_created']
 
-admin.site.register(CustomUser)
+admin.site.register(CustomUser, UserAdmin)
 admin.site.register(UserProfile)
 admin.site.register(Banks)
 admin.site.register(Wallets)

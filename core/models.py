@@ -37,7 +37,7 @@ WITHDRAW_CHOICE = (
 	('Bitcoin', 'Bitcoin')
 )
 class UserManager(BaseUserManager):
-    def create_user(self, email, password=None):
+    def create_user(self, email, password=None, **extra_fields):
         """
         Creates and saves a User with the given email and password.
         """
@@ -52,7 +52,7 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_staffuser(self, email, password):
+    def create_staffuser(self, email, password, **extra_fields):
         """
         Creates and saves a staff user with the given email and password.
         """
@@ -64,7 +64,7 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, password):
+    def create_superuser(self, email, password, **extra_fields):
         """
         Creates and saves a superuser with the given email and password.
         """
@@ -86,6 +86,10 @@ class CustomUser(AbstractBaseUser):
         max_length=255,
         unique=True,
     )
+    first_name = models.CharField(max_length=250, null=True, blank=True)
+    last_name = models.CharField(max_length=250, null=True, blank=True)
+    mobile_no = models.CharField(max_length=250, null=True, blank=True)
+    country = models.CharField(max_length=250, null=True, blank=True)
     is_active = models.BooleanField(default=True)
     staff = models.BooleanField(default=False) # a admin user; non super-user
     admin = models.BooleanField(default=False) # a superuser
@@ -97,7 +101,7 @@ class CustomUser(AbstractBaseUser):
 
     def get_full_name(self):
         # The user is identified by their email address
-        return self.email
+        return f'{self.first_name} {self.last_name}'
 
     def get_short_name(self):
         # The user is identified by their email address
