@@ -12,11 +12,11 @@ DATABASES = {
 """DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'defaultdb',
-        'USER': 'doadmin',
-        'PASSWORD': 'AVNS_Z9fBZWSJtbZo_8QMf65',
-        'HOST': 'private-django-db-do-user-12720463-0.b.db.ondigitalocean.com',
-        'PORT': '25060'
+        'NAME': 'cfd360_user',
+        'USER': 'cfd360',
+        'PASSWORD': 'RKzduwRNAORhspPck6jSFOIO8ciAafkg',
+        'HOST': 'dpg-cdo4u19a6gdooi7q29v0-a',
+        'PORT': '5432'
     }
 }
 """

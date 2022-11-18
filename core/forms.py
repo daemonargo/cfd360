@@ -2,7 +2,7 @@ from django import forms
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
 from .models import UserProfile, Wallets, Deposits, Withdraw
-
+from allauth.account.forms import SignupForm
 
 
 PAYMENT_CHOICES = (
@@ -10,16 +10,27 @@ PAYMENT_CHOICES = (
     ('P', 'PayPal')
 )
 
-class QuickTradeForm(forms.ModelForm):
-    class Meta:
-        model = UserProfile
-        fields = ['quick_trade']
+class CustomSignupForm(SignupForm):
+    first_name = forms.CharField(max_length=30, label='First Name')
+    last_name = forms.CharField(max_length=30, label='Last Name')
+    mobile_no = forms.CharField(max_length=30, label='Mobile Number')
+    country = forms.CharField(max_length=30, label='Country')
+ 
+    def save(self, request):
+        user = super(CustomSignupForm, self).save(request)
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
+        user.mobile_no = self.cleaned_data['mobile_no']
+        user.country = self.cleaned_data['country']
+        user.save()
+        return user
+
 
 
 class DepositForm(forms.ModelForm):
     class Meta:
         model = Deposits
-        fields = ['amount']
+        fields = ['amount', 'payment_method']
     
 class WithdrawForm(forms.ModelForm):
     class Meta:
@@ -34,7 +45,8 @@ class WalletForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['user', 'first_name', 'last_name', 'mobile_no']
+        fields = ['wallet']
+        
         
 class CheckoutForm(forms.Form):
     shipping_address = forms.CharField(required=False)

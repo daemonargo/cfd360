@@ -17,7 +17,7 @@
                         <path d="M53.2837 0.5C53.2837 0.223858 53.5075 0 53.7837 0H75.6195C75.8957 0 76.1195 0.223858 76.1195 0.5V26.25H53.2837V0.5Z" fill="#FF971D"></path>
                         <path d="M53.2837 123.75H76.1195V149.5C76.1195 149.776 75.8957 150 75.6195 150H53.7837C53.5075 150 53.2837 149.776 53.2837 149.5V123.75Z" fill="#FF971D"></path>
                     </g>
-                </svg>            <h4 class="logo-title m-0">ryptoland</h4>
+                </svg>            <h4 class="logo-title m-0">fd360.net</h4>
             </a>
             <div class="sidebar-toggle" data-toggle="sidebar" data-active="true">
                 <i class="icon">
@@ -30,19 +30,8 @@
         </div>
         <div class="sidebar-body p-0 data-scrollbar">
             <div class="collapse navbar-collapse pe-3" id="sidebar">
-                <ul class="navbar-nav iq-main-menu">
-                    <li class="nav-item ">
-                        <a class="nav-link active" aria-current="page" href="../dashboard/index.html">
-                            <i class="icon">
-                            <svg width="22" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.15722 20.7714V17.7047C9.1572 16.9246 9.79312 16.2908 10.581 16.2856H13.4671C14.2587 16.2856 14.9005 16.9209 14.9005 17.7047V17.7047V20.7809C14.9003 21.4432 15.4343 21.9845 16.103 22H18.0271C19.9451 22 21.5 20.4607 21.5 18.5618V18.5618V9.83784C21.4898 9.09083 21.1355 8.38935 20.538 7.93303L13.9577 2.6853C12.8049 1.77157 11.1662 1.77157 10.0134 2.6853L3.46203 7.94256C2.86226 8.39702 2.50739 9.09967 2.5 9.84736V18.5618C2.5 20.4607 4.05488 22 5.97291 22H7.89696C8.58235 22 9.13797 21.4499 9.13797 20.7714V20.7714" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>                            
-                            </i>
-                            <span class="item-name">Dashboard</span>
-                        </a>
-                    </li>
+                
                    
-                           
-                        </ul>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="collapse" href="#sidebar-auth" role="button" aria-expanded="false" aria-controls="sidebar-user">
                             <i class="icon">
@@ -116,6 +105,11 @@
         </nav>        <!--Nav End-->
       </div>
       <div class="container-fluid content-inner pb-0">
+         {% if profile.wallet.deposit.status == 'Completed' %}
+         <p class="alert alert-success p-2 text-center">Your latest deposit of <b>${{profile.wallet.deposit.amount}} </b> has been verified successfully, you can now continue investing and trading with us. Please be patient and your portfolio balance would be updated</p>
+         {% elif profile.wallet.deposit.status == 'Pending'%}
+         <p class="alert alert-danger p-2 text-center">Your deposit of {{profile.wallet.deposit.amount}} is still pending, please be patient while your transaction undergoes verification</p>
+       {% endif %}
 <div class="row">
    <div class="col-lg-12">
          <div class="row align-items-center mb-4">
@@ -133,11 +127,27 @@
                                     <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                                  </svg>
                               </a>
+                             
                               <p class="lead ml-2">{{profile.wallet.address}}</p>
-                              <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton4">
+                              <ul class="dropdown-menu w-100" style="padding: 15px;" aria-labelledby="dropdownMenuButton4">
 
-                                 <li><a href="#" class="dropdown-item"><img src="{% static 'assets/images/coins/01.png' %} " class="img-fluid avatar avatar-30 avatar-rounded" alt="img71"> {{profile.wallet.balance}}</a></li>
-    
+                                 <li>Current Balance: ${{profile.wallet.balance}}</li>
+                                 <li>Date Created: {{profile.wallet.date_created}}</li>
+
+                                 {% if profile.wallet.deposit.amount %}
+                                 <li>Latest Deposit: ${{profile.wallet.deposit.amount}}</li>
+                                 {% else %}
+                                 <li>Latest Deposit: No current deposits</li>
+                                 {% endif %}
+
+                                 {% if profile.wallet.deposit.status == 'Pending' %}
+                                 <li>Deposit Status: <span class="text-warning">{{profile.wallet.deposit.status}}</span> </li>
+                                 {% else %}
+                                 <li>Deposit Status: <span class="text-success">Verified</span></li>
+                                 {% endif %}
+
+                                 
+                  
                               </ul>
                            </div> 
                         </div>
@@ -167,7 +177,7 @@
                <div class="d-grid gap-card">
                   <div class="dropdown">
                      <button class="btn btn-primary w-100" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
-                        Buy / Sell
+                     Quick Trade
                      </button>
                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
                         <div class="cardbuysell mb-0">
@@ -282,14 +292,10 @@
                        
                      </div>
                      <div class="card-body">
-                        <form class="col-lg-12" method="post">
-                           <div name="" id="at_name" style="display: none;" class="alert alert-success alert-dismissible fade show" role="alert">
-                              <strong>Success!</strong> You have switched to auto trade
-                              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                           <input type="submit"  class="btn btn-primary" value="Switch to auto trade" name="auto_trade" id="a_trade">
+                       
+                           <button type="button" class="btn btn-primary" name="auto_trade" onclick="switch_trade()" id="a_trade">Switch to auto trade</button>
                           
-                        </form>
+                       
                      </div>                                          
                   </div>
                </div>
@@ -311,7 +317,7 @@
                               </div>
                               <h6 class="pt-4">This Week </h6>                  
                               <div class="pt-4">
-                                 <h5 class="counter" style="visibility: visible;">${{profile.this_week}}
+                                 <h5 class="counter" style="visibility: visible;">${{profile.wallet.this_week}}
                                     <span>
                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 20 20" fill="green">
                                        <path fill-rule="evenodd" d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
@@ -320,7 +326,7 @@
                                  </h5>
                                  <div class="pt-4">
                                     <div class="pb-3">
-                                    <small>+ {{profile.this_week_roi}}%</small>  
+                                    <small>+ {{profile.wallet.this_week_roi}}%</small>  
                                     </div> 
                                  </div>                       
                               </div>
@@ -337,7 +343,7 @@
                               </div>
                               <h6 class="pt-4">This Month </h6>                  
                               <div class="pt-4">
-                                 <h5 class="counter" style="visibility: visible;">${{profile.this_month}}
+                                 <h5 class="counter" style="visibility: visible;">${{profile.wallet.this_month}}
                                     <span>
                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 20 20" fill="red">
                                        <path fill-rule="evenodd" d="M14.707 12.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l2.293-2.293a1 1 0 011.414 0z" clip-rule="evenodd" />
@@ -345,7 +351,7 @@
                                     </span>
                                  </h5>
                                  <div class="pt-4 pb-3">
-                                    <small>- {{profile.this_month_roi}}%</small>
+                                    <small>- {{profile.wallet.this_month_roi}}%</small>
                                  </div>
 
                                  
@@ -372,5 +378,4 @@
 
       </div>
 
-      
    {% endblock content %}

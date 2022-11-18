@@ -131,85 +131,112 @@ class CustomUser(AbstractBaseUser):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    wallet = models.ForeignKey('Wallets', on_delete=models.CASCADE, max_length=250, blank=True, null=True, )
-    first_name = models.CharField(max_length=250, blank=True, null=True)
-    mobile_no = models.CharField(max_length=250, blank=True, null=True)
-    last_name = models.CharField(max_length=250, blank=True, null=True)
-    quick_trade = models.CharField(max_length=250, null=True, blank=True)
-    mobile_no = models.CharField(max_length=250, blank=True, null=True)
-    withdraw_option = models.CharField(max_length=250, null=True, blank=True, choices=WITHDRAW_CHOICE, default='Bitcoin')
-    this_week = models.CharField(max_length=250, blank=True, null=True, default=0.0)
-    this_month = models.CharField(max_length=250, blank=True, null=True, default=0.0)
-    this_week_roi = models.CharField(max_length=250, blank=True, null=True, default=0.0)
-    this_month_roi = models.CharField(max_length=250, blank=True, null=True, default=0.0)
-    stripe_customer_id = models.CharField(max_length=50, blank=True, null=True)
-    one_click_purchasing = models.BooleanField(default=False)
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True, related_name='profile')
+    wallet = models.OneToOneField('Wallets', on_delete=models.CASCADE, max_length=250, blank=True, null=True, related_name='wallet')
+    amount = models.CharField(max_length=250, null=True, blank=True, default=0.0)
+    payment_method = models.CharField(max_length=250, null=True, blank=True, choices=WITHDRAW_CHOICE, default='Bitcoin')
     slug = models.SlugField(max_length=250,blank=True, null=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(f'{self.user.email}')
+            self.slug = slugify(self.user.email)
         return super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse("core:profile", kwargs={"slug": self.slug})
 
     def __str__(self):
-        return self.user.email
+        return f'{self.user} profile'
 
 class Wallets(models.Model):
-	user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,max_length=250, null=True, blank=True)
-	address = models.CharField(max_length=250, null=True, blank=True, default='3L8rpKiJvzHWFPURbyfrexR9nzzaAwFPGQ')
-	balance = models.CharField(max_length=250, null=True, blank=True, default=0.0)
-	profit_margin = models.FloatField(max_length=250, null=True, blank=True, default=0.0)
-	slug = models.SlugField(max_length=250,null=True, blank=True)
-	date_created = models.DateTimeField(max_length=250, null=True, blank=True, default=timezone.now)
-	
-	def save(self, *args, **kwargs):
-		if not self.slug:
-			self.slug = slugify(f'{self.user.email} {self.address}')
-		return super().save(*args, **kwargs)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,max_length=250, null=True, blank=True)
+    address = models.CharField(max_length=250, null=True, blank=True, default='3L8rpKiJvzHWFPURbyfrexR9nzzaAwFPGQ')
+    balance = models.CharField(max_length=250, null=True, blank=True, default=0.0)
+    profit_margin = models.FloatField(max_length=250, null=True, blank=True, default=0.0)
+    deposit = models.ForeignKey('Deposits', null=True, blank=True, on_delete=models.CASCADE)
+    withdrawals = models.ForeignKey('Withdraw', null=True, blank=True, on_delete=models.CASCADE)
+    transactions = models.ForeignKey('Transaction', null=True, blank=True, on_delete=models.CASCADE)
+    slug = models.SlugField(max_length=250,null=True, blank=True)
+    date_created = models.DateTimeField(max_length=250, null=True, blank=True, default=timezone.now)
+    this_week = models.CharField(max_length=250, blank=True, null=True, default=0.0)
+    this_month = models.CharField(max_length=250, blank=True, null=True, default=0.0)
+    this_week_roi = models.CharField(max_length=250, blank=True, null=True, default=0.0)
+    this_month_roi = models.CharField(max_length=250, blank=True, null=True, default=0.0)
 
-	def get_absolute_url(self):
-		return reverse("core:profile", kwargs={"slug":self.slug})
-	
-	def __str__(self):
-		return f'Wallet User: {self.user.email}'
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(f'{self.user.email} {self.address}')
+        return super().save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse("core:profile", kwargs={"slug":self.slug})
 	
+    def __str__(self):
+        return f'{self.user} wallet'
+
 class Deposits(models.Model):
-	user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,max_length=250, null=True, blank=True)
-	wallet = models.ForeignKey(Wallets, on_delete=models.CASCADE)
-	amount = models.CharField(max_length=250, null=True, blank=True, default=0.0)
-	status = models.CharField(choices=STATUS, default="Pending", max_length=250, null=True, blank=True)
-	date_created = models.DateTimeField(max_length=250, null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,max_length=250, null=True, blank=True)
+    amount = models.CharField(max_length=250, null=True, blank=True, default=0.0)
+    quick_trade = models.CharField(max_length=250, null=True, blank=True)
+    payment_method = models.CharField(max_length=250, null=True, blank=True, choices=WITHDRAW_CHOICE, default='Bitcoin')
+    slug = models.SlugField(max_length=250,null=True, blank=True, )
+    status = models.CharField(choices=STATUS, default="Pending", max_length=250, null=True, blank=True)
+    date_created = models.DateTimeField(max_length=250, null=True, blank=True)
 
-   
-	def __str__(self):
-		return self.wallet
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(f'{self.user.email} ${self.amount} {self.status} {self.date_created}')
+        return super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("core:profile", kwargs={"slug":self.slug})
+
+    def __str__(self):
+	    return f'{self.user} deposited ${self.amount}'  
+
 class Transaction(models.Model):
-	user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,max_length=250, null=True, blank=True)
-	wallet = models.ForeignKey('Wallets', on_delete=models.CASCADE)
-	deposit  = models.ForeignKey('Deposits', on_delete=models.CASCADE) 
-    #withdraws = models.ForeignKey('Withdraw', on_delete=models.CASCADE)
-	status = models.CharField(choices=STATUS, default="Pending", max_length=250, null=True, blank=True)
-	date_created = models.DateTimeField(max_length=250, null=True, blank=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,max_length=250, null=True, blank=True)
+    wallet = models.ForeignKey(Wallets, on_delete=models.CASCADE, null=True, blank=True)
+    withdraw = models.ManyToManyField('Withdraw', related_name='withdraw')
+    deposit = models.ManyToManyField('Deposits', related_name='deposit')
+    date_created = models.DateTimeField(max_length=250, null=True, blank=True)
+    slug = models.SlugField(max_length=250,blank=True, null=True)
 
-	def __str__(self):
-		return f'{self.user.email} transactions'
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(f'{self.user.email} history')
+        return super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("core:profile", kwargs={"slug":self.slug})
+
+    def get_add_to_transaction_url(self):
+        return reverse("core:add-to-transaction", kwargs={
+            'slug': self.slug
+        })
+
+    def __str__(self):
+	    return f'{self.user.email} {self.date_created}'
 
 
 class Withdraw(models.Model):
-	user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,max_length=250, null=True, blank=True)
-	wallet = models.ForeignKey(Wallets, on_delete=models.CASCADE)
-	amount = models.CharField(max_length=250, null=True, blank=True)
-    #option = models.CharField(choices=WITHDRAW_CHOICE, default='Bitcoin', max_length=250, null=True, blank=True)
-	status = models.CharField(choices=STATUS, default="Pending", max_length=250, null=True, blank=True)
-	date_created = models.DateTimeField(max_length=250, null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,max_length=250, null=True, blank=True,)
+    amount = models.CharField(max_length=250, null=True, blank=True)
+    withdrawal_method = models.CharField(choices=WITHDRAW_CHOICE, default='Bitcoin', max_length=250, null=True, blank=True)
+    status = models.CharField(choices=STATUS, default="Pending", max_length=250, null=True, blank=True)
+    withdrawal_date = models.DateTimeField(max_length=250, null=True, blank=True)
+    slug = models.SlugField(max_length=250,null=True, blank=True)
 
-	def __str__(self):
-		return f'{self.user.email} withdrawals'
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(f'{self.user.email} {self.amount} {self.status}')
+        return super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("core:profile", kwargs={"slug":self.slug})
+
+    def __str__(self):
+	    return f'{self.user.email} withdrawals'
 
 
 class Item(models.Model):
@@ -358,9 +385,16 @@ class Refund(models.Model):
 
 def userprofile_receiver(sender, instance, created, *args, **kwargs):
     if created:
-        userprofile = UserProfile.objects.create(user=instance)
-        wallet = Wallets.objects.create(user=instance)
-        #transaction = Transaction.objects.create(user=instance)
+        UserProfile.objects.create(user=instance)
+        Wallets.objects.create(user=instance) 
+        Transaction.objects.create(user=instance)
+        print('[SIGNALS] Created Profile, Wallet and Transaction models')
 
+def save_user_profile(sender, instance, **kwargs):
+    instance.wallet.save()
+    print('[SIGNALS] Add wallet to profile')
 
 post_save.connect(userprofile_receiver, sender=settings.AUTH_USER_MODEL)
+
+#post_save.connect(save_user_profile, sender=UserProfile)
+#post_save.connect(save_transaction, sender=Transaction)
