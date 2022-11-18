@@ -127,13 +127,15 @@
                                     <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                                  </svg>
                               </a>
-                             
+                              {% if profile.wallet %}
                               <p class="lead ml-2">{{profile.wallet.address}}</p>
+                              {% else %}
+                              <p class="lead ml-2">Hang on, provisioning wallet ...</p>
+                              {% endif %}
+                             
+                              
                               <ul class="dropdown-menu w-100" style="padding: 15px;" aria-labelledby="dropdownMenuButton4">
-
-                                 <li>Current Balance: ${{profile.wallet.balance}}</li>
-                                 <li>Date Created: {{profile.wallet.date_created}}</li>
-
+                                 {% if profile.wallet.address %}
                                  {% if profile.wallet.deposit.amount %}
                                  <li>Latest Deposit: ${{profile.wallet.deposit.amount}}</li>
                                  {% else %}
@@ -145,6 +147,11 @@
                                  {% else %}
                                  <li>Deposit Status: <span class="text-success">Verified</span></li>
                                  {% endif %}
+                                 {% else %}
+                                 <p class="lead ml-2">Hang on, provisioning wallet ...</p>
+                                 {% endif %}
+
+                                
 
                                  
                   
@@ -190,13 +197,20 @@
                                     <p class="fs-6">Sell</p>
                                  </div>
                               </div>
-                            <form  method="post">
+                           {% if profile.wallet %}
+                           <form  method="post">
                               <input type="text" class="form-control" name="" id="">
                            <br>
                                      
                               <div class="d-grid">
                                  <button class="btn btn-primary" type="submit">Buy BTC</button>
                               </div>
+                             {% else %}
+                      
+                              <div class="d-grid" style="padding: 25px; ">
+                                 <p class="lead" style="font-size: 14px;">Your account hasnt been verified. You cant make quick trades yet</p>
+                              </div>
+                           {% endif %}
 
                            </form> 
                            </div>
@@ -211,10 +225,18 @@
                         <div class="cardbuysell mb-0">
                            <div class="card-body iq-extra">
                               <div class="d-flex justify-content-between">
-                                <div class="container p-2 text-center">
+                                 {% if profile.wallet %}
+                                 <div class="container p-2 text-center">
                                     <p style="font-size: 14px;" class="lead" >To add to your portfolio balance, deposit BTC into the following address.</p> <br>
                                     <strong style="font-size: 12px;">{{profile.wallet.address}}</strong>
                                 </div>
+                                   {% else %}
+                                   <div class="container p-2 text-center">
+                                    <p style="font-size: 14px;" class="lead" >Please hang on a little your portfolio account is still being created. Once completed you can go ahead to make deposits</p> <br>
+                                    
+                                </div>
+                                 {% endif %}
+                               
                               </div>
                            
                                          
@@ -227,24 +249,49 @@
                      </a>
                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton5">
                         <div class="cardbuysell mb-0">
-                           <div class="card-body iq-extra">
+                          {% if profile.wallet %}
+                          <div class="card-body iq-extra">
+                           <div class="d-flex justify-content-between">
+                             <div class="container p-2 text-center">
+                              <p style="font-size: 14px;" class="lead" >To withdraw from your account please choose the required withdrawal amount and withdrawal method.</p>
+                              
+                              {% if profile.payment_method %}
+                             
+                                 <div class="form-group">
+                                   <p class="lead" style="font-size: 14px;">Default payment method
+                                     <select name="" id="">
+                                       <option value="{{ profile.payment_method }}">{{ profile.payment_method }}</option>
+                                       <option value=""><a href="" class="text-warning">Change payment method</a></option>
+                                   </select>
+                                    
+                                      </p>
+                                    <input type="submit" class="btn btn-info" value="Continue to withdrawal">
+                        
+                                 </div>
+                             
+                               
+                              {% endif %}
+
+                         
+                 
+                         </div>
+
+                           </div>
+                          
+                            {% else %}
+                            <div class="card-body iq-extra">
                               <div class="d-flex justify-content-between">
                                 <div class="container p-2 text-center">
-                                 <p style="font-size: 14px;" class="lead" >To withdraw from your account please choose the required withdrawal amount and withdrawal method.</p>
+                                 <p style="font-size: 14px;" class="lead" >Please hang on a little your portfolio account is still being created. Once completed you can go ahead to make withdrawals.</p>
 
-                                 <form  method="POST">
-                                    <div class="form-group">
-                                       {% csrf_token %}
-                                       {{w_form|crispy}}
-                                       <input type="submit" class="btn btn-info" value="Continue to withdrawal">
-                           
-                                    </div>
-                                 </form>
+                              
                     
                             </div>
 
                               </div>
                              
+                            
+                          {% endif %}
                                          
                            
                            </div>
@@ -272,10 +319,19 @@
                         <path d="M26.7847 13.3246L31.6677 14.0197L30.4485 18.7565L26.7847 13.3246ZM30.2822 19.4024C30.2823 19.4023 30.2823 19.4021 30.2824 19.402L30.2822 19.4024ZM31.9991 14.0669L31.9995 14.0669L32.0418 13.7699L31.9995 14.0669C31.9994 14.0669 31.9993 14.0669 31.9991 14.0669Z" fill="#BFBFBF" stroke="#BFBFBF"/>
                         </svg>
                         <div class="pt-3">
-                          
-                           <h4 class="counter" style="visibility: visible;">${{profile.wallet.balance}}</h4>
+                          {% if profile.wallet %}
+                          <h4 class="counter" style="visibility: visible;">${{profile.wallet.balance}}</h4>
+                            {% else %}
+                            <h4 class="counter" style="visibility: visible;">Provisioning wallet ...</h4>
+                          {% endif %}
+                           
                            <div class="pt-3">
+                              {% if profile.wallet %}
                               <small class="text-success">+{{profile.wallet.profit_margin}}%</small>
+                                {% else %}
+                                <h4 class="counter" style="visibility: visible;">Provisioning wallet ...</h4>
+                              {% endif %}
+                              
                            </div>
                         </div>
                      </div>            
@@ -306,6 +362,7 @@
                            <h4 class="card-title">Account Summary</h4>        
                         </div>
                      </div>
+                     {% if profile.wallet %}
                      <div class="card-body text-center">
                         <div class="row">
                         <div class="col-md-6"> 
@@ -326,6 +383,9 @@
                                  </h5>
                                  <div class="pt-4">
                                     <div class="pb-3">
+
+
+                                       
                                     <small>+ {{profile.wallet.this_week_roi}}%</small>  
                                     </div> 
                                  </div>                       
@@ -356,6 +416,11 @@
 
                                  
                               </div>
+                       {% else %}
+                       <div style="padding: 25px;" class="container text-center">
+                        <p class="lead">Provisioning your wallet</p>
+                       </div>
+                     {% endif %}
                            </div>
                         </div>              
                         </div>

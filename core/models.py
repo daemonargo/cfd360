@@ -137,6 +137,8 @@ class UserProfile(models.Model):
     payment_method = models.CharField(max_length=250, null=True, blank=True, choices=WITHDRAW_CHOICE, default='Bitcoin')
     slug = models.SlugField(max_length=250,blank=True, null=True)
 
+    date_created = models.DateTimeField(max_length=250, null=True, blank=True, default=timezone.now)
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.user.email)
@@ -157,7 +159,7 @@ class Wallets(models.Model):
     withdrawals = models.ForeignKey('Withdraw', null=True, blank=True, on_delete=models.CASCADE)
     transactions = models.ForeignKey('Transaction', null=True, blank=True, on_delete=models.CASCADE)
     slug = models.SlugField(max_length=250,null=True, blank=True)
-    date_created = models.DateTimeField(max_length=250, null=True, blank=True, default=timezone.now)
+    
     this_week = models.CharField(max_length=250, blank=True, null=True, default=0.0)
     this_month = models.CharField(max_length=250, blank=True, null=True, default=0.0)
     this_week_roi = models.CharField(max_length=250, blank=True, null=True, default=0.0)
@@ -174,8 +176,29 @@ class Wallets(models.Model):
     def __str__(self):
         return f'{self.user} wallet'
 
-class Deposits(models.Model):
+class Banks(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,max_length=250, null=True, blank=True)
+    bank_name = models.CharField(max_length=250, null=True, blank=True, default=0.0)
+    bank_address = models.CharField(max_length=250, null=True, blank=True)
+    state = models.CharField(max_length=250, null=True, blank=True)
+    country = models.CharField(max_length=250, null=True, blank=True )
+    IBAN_number = models.CharField(max_length=250, null=True, blank=True)
+    slug = models.SlugField(max_length=250,null=True, blank=True, )
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(f'{self.user.email} bank')
+        return super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("core:profile", kwargs={"slug":self.slug})
+
+    def __str__(self):
+	    return f'{self.user.email} banks'
+
+
+class Deposits(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,max_length=250, null=True, blank=True, )
     amount = models.CharField(max_length=250, null=True, blank=True, default=0.0)
     quick_trade = models.CharField(max_length=250, null=True, blank=True)
     payment_method = models.CharField(max_length=250, null=True, blank=True, choices=WITHDRAW_CHOICE, default='Bitcoin')

@@ -437,8 +437,6 @@ def home(request):
     else:
         link = '/'
 
-    
-
     return render(request, 'index.html', {'link':link})
         
 

@@ -1,12 +1,13 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+#from django.contrib.auth.admin
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.conf import settings
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
-from .models import Item, OrderItem, Order, Payment, Coupon, Refund, Address, UserProfile, BaseUserManager, AbstractBaseUser, Wallets, Deposits, Withdraw, CustomUser, Transaction
+from .models import Item, OrderItem, Order, Payment, Coupon, Refund, Address, UserProfile, BaseUserManager, AbstractBaseUser, Wallets, Deposits, Withdraw, CustomUser, Transaction, Banks
 
 
 
@@ -47,56 +48,15 @@ def make_refund_accepted(modeladmin, request, queryset):
 
 make_refund_accepted.short_description = 'Update orders to refund granted'
 
-
-class OrderAdmin(admin.ModelAdmin):
-    list_display = ['user',
-                    'ordered',
-                    'being_delivered',
-                    'received',
-                    'refund_requested',
-                    'refund_granted',
-                    'shipping_address',
-                    'billing_address',
-                    'payment',
-                    'coupon'
-                    ]
-    list_display_links = [
-        'user',
-        'shipping_address',
-        'billing_address',
-        'payment',
-        'coupon'
-    ]
-    list_filter = ['ordered',
-                   'being_delivered',
-                   'received',
-                   'refund_requested',
-                   'refund_granted']
-    search_fields = [
-        'user__username',
-        'ref_code'
-    ]
-    actions = [make_refund_accepted]
-
-
-class AddressAdmin(admin.ModelAdmin):
-    list_display = [
-        'user',
-        'street_address',
-        'apartment_address',
-        'country',
-        'zip',
-        'address_type',
-        'default'
-    ]
-    list_filter = ['default', 'address_type', 'country']
-    search_fields = ['user', 'street_address', 'apartment_address', 'zip']
-
-
+class UserProfileAdmin():
+    list_display = ['user', 'wallet', 'amount', 'date_created']
+    search_fields = ['user']
+    ordering = ['-date_created']
 
 admin.site.register(CustomUser)
 admin.site.register(UserProfile)
+admin.site.register(Banks)
 admin.site.register(Wallets)
+admin.site.register(Transaction)
 admin.site.register(Deposits)
 admin.site.register(Withdraw)
-admin.site.register(Transaction)
