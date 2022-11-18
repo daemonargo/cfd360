@@ -1,7 +1,7 @@
 from .base import *
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'cfd360.net', 'www.cfd360.net', 'cfd360.onrender.com']
 
-DEBUG = True
+DEBUG = False
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -22,14 +22,14 @@ DATABASES = {
 """
 
 if DEBUG == True:
-    """DATABASES = {
+    DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-}"""
+}
 else:
-    """DATABASES = {
+    DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'cfd360_user',
@@ -39,7 +39,7 @@ else:
         'PORT': '5432'
     }
 }
-"""
+
     print('Debug is false')
 
 AUTH_PASSWORD_VALIDATORS = [
