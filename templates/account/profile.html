@@ -198,12 +198,15 @@
                                  </div>
                               </div>
                            {% if profile.wallet %}
-                           <form  method="post">
-                              <input type="text" class="form-control" name="" id="">
+                           <form action="{% url 'core:verification' %}" method="post">
+                              <input type="text" required class="form-control" name="" id="">
+                              <div class="d-grid">
+                                 <input class="btn btn-primary" type="submit" />
+                              </div>
                            <br>
                                      
                               <div class="d-grid">
-                                 <button class="btn btn-primary" type="submit">Buy BTC</button>
+                                 <a href="{% url 'core:verification' %}" class="btn btn-primary" type="submit">Buy BTC</a>
                               </div>
                              {% else %}
                       
@@ -265,7 +268,7 @@
                                    </select>
                                     
                                       </p>
-                                    <input type="submit" class="btn btn-info" value="Continue to withdrawal">
+                                    <a href="{% url 'core:verification' %}" class="btn btn-info">Continue to withdrawal</a>
                         
                                  </div>
                              
