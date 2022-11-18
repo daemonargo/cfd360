@@ -5,7 +5,7 @@
      <!-- loader Start -->
     <div id="loading">
       <div class="loader simple-loader">
-          <div class="loader-body"></div>
+          <div class="loader-body">Cfd360</div>
       </div>    </div>
     <!-- loader END -->
     <aside class="sidebar sidebar-default navs-rounded ">
@@ -198,16 +198,13 @@
                                  </div>
                               </div>
                            {% if profile.wallet %}
-                           <form action="{% url 'core:verification' %}" method="post">
-                              <input type="text" required class="form-control" name="" id="">
+
                               <div class="d-grid">
-                                 <input class="btn btn-primary" type="submit" />
+                                 <a href="{% url 'core:verification' %}" class="btn btn-info">Quick Trade</a>
+                                 
                               </div>
                            <br>
-                                     
-                              <div class="d-grid">
-                                 <a href="{% url 'core:verification' %}" class="btn btn-primary" type="submit">Buy BTC</a>
-                              </div>
+                            
                              {% else %}
                       
                               <div class="d-grid" style="padding: 25px; ">
@@ -215,7 +212,7 @@
                               </div>
                            {% endif %}
 
-                           </form> 
+                      
                            </div>
                         </div>
                      </ul>
@@ -262,7 +259,7 @@
                              
                                  <div class="form-group">
                                    <p class="lead" style="font-size: 14px;">Default payment method
-                                     <select name="" id="">
+                                     <select name="" id="" class="form-control">
                                        <option value="{{ profile.payment_method }}">{{ profile.payment_method }}</option>
                                        <option value=""><a href="" class="text-warning">Change payment method</a></option>
                                    </select>
@@ -437,7 +434,7 @@
    <div class="col-lg-4">
       <div class="row">
          <div class="col-lg-12">
-              
+             <h3 class="lead">Transactions</h3>
                   
                </div>
          </div>
