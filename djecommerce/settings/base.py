@@ -1,6 +1,6 @@
 import os
 from decouple import config
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'cfd360.net', 'www.cfd360.net', 'cfd360.onrender.com', 'cfd360.herokuapp.com', 'www.cfd360.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'cfd360.net', 'www.cfd360.net', 'cfd360.onrender.com', 'cfd360.herokuapp.com', 'www.cfd360.herokuapp.com', '0.0.0.0']
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(
@@ -28,7 +28,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    #'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',   
     
