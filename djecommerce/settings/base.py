@@ -91,7 +91,7 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_FORMS = {
 'signup': 'core.forms.CustomSignupForm',
 }
-STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+#STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ACCOUNT_EMAIL_VERIFICATION = "none"
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
