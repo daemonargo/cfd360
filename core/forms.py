@@ -14,7 +14,7 @@ class CustomSignupForm(SignupForm):
     first_name = forms.CharField(max_length=30, label='First Name')
     last_name = forms.CharField(max_length=30, label='Last Name')
     mobile_no = forms.CharField(max_length=30, label='Mobile Number')
-    country = forms.CharField(max_length=30, label='Country')
+    country = CountryField(max_length=30, blank_label='(select country)')
  
     def save(self, request):
         user = super(CustomSignupForm, self).save(request)
