@@ -3,7 +3,7 @@ from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
 from .models import UserProfile, Wallets, Deposits, Withdraw
 from allauth.account.forms import SignupForm
-
+from django_countries.data import COUNTRIES
 
 PAYMENT_CHOICES = (
     ('S', 'Stripe'),
@@ -14,7 +14,7 @@ class CustomSignupForm(SignupForm):
     first_name = forms.CharField(max_length=30, label='First Name')
     last_name = forms.CharField(max_length=30, label='Last Name')
     mobile_no = forms.CharField(max_length=30, label='Mobile Number')
-    country = CountryField(max_length=30, blank_label='(select country)')
+    country = CountryField().formfield()
  
     def save(self, request):
         user = super(CustomSignupForm, self).save(request)
