@@ -2,8 +2,7 @@ from .base import *
 #ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'cfd360.net', 'www.cfd360.net', 'cfd360.onrender.com', 'cfd360.herokuapp.com', 'www.cfd360.herokuapp.com']
 
 DEBUG = True
-if DEBUG == True:
-    DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
